@@ -1,12 +1,22 @@
-package com.jayyaj.dailydoggo;
+package com.jayyaj.dailydoggo.view;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.jayyaj.dailydoggo.R;
+import com.jayyaj.dailydoggo.databinding.FragmentDetailBinding;
+import com.jayyaj.dailydoggo.databinding.FragmentListBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +24,7 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class DetailFragment extends Fragment {
+    private FragmentDetailBinding binding;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -47,18 +58,32 @@ public class DetailFragment extends Fragment {
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_detail, container, false);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        binding = DataBindingUtil.setContentView(getActivity(), R.layout.fragment_detail);
+    }
+
+    public void onGoList() {
+        NavDirections action = DetailFragmentDirections.actionList();
+        NavHostFragment.findNavController(this).navigate(action);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail, container, false);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        binding.fabDetail.setOnClickListener(v -> {
+            onGoList();
+        });
     }
 }
