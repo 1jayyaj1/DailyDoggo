@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.jayyaj.dailydoggo.R;
 import com.jayyaj.dailydoggo.databinding.FragmentDetailBinding;
@@ -25,6 +26,7 @@ import com.jayyaj.dailydoggo.databinding.FragmentListBinding;
  */
 public class DetailFragment extends Fragment {
     private FragmentDetailBinding binding;
+    private int dogUuid;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -74,16 +76,11 @@ public class DetailFragment extends Fragment {
         binding = DataBindingUtil.setContentView(getActivity(), R.layout.fragment_detail);
     }
 
-    public void onGoList() {
-        NavDirections action = DetailFragmentDirections.actionList();
-        NavHostFragment.findNavController(this).navigate(action);
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding.fabDetail.setOnClickListener(v -> {
-            onGoList();
-        });
+        if (getArguments() != null) {
+            dogUuid = DetailFragmentArgs.fromBundle(getArguments()).getDogUuid();
+        }
     }
 }

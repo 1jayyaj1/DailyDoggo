@@ -2,33 +2,57 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" >
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".view.DetailFragment">
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="121dp"
-            android:layout_height="48dp"
-            android:gravity="center"
-            android:text="@string/details_fragment_text"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/dogImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:minHeight="200dp"
+            android:scaleType="fitCenter" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabDetail"
+        <TextView
+            android:id="@+id/dogName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp"
-            android:clickable="true"
-            android:src="@drawable/ic_baseline_menu_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:layout_margin="4dp"
+            android:text="Dog name"
+            android:layout_below="@id/dogImage"
+            android:layout_centerHorizontal="true"
+            style="@style/title_style"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/dogPurpose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="Dog purpose"
+            android:layout_below="@id/dogName"
+            android:layout_centerHorizontal="true"
+            style="@style/textStyle" />
+
+        <TextView
+            android:id="@+id/dogTemperament"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="Dog temperament"
+            android:layout_below="@id/dogPurpose"
+            android:layout_centerHorizontal="true"
+            style="@style/textStyle" />
+
+        <TextView
+            android:id="@+id/dogLifespan"
+            style="@style/textStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_below="@id/dogTemperament"
+            android:layout_centerHorizontal="true"
+            android:text="Dog lifespan" />
+    </RelativeLayout>
 </layout>

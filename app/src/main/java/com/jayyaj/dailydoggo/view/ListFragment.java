@@ -75,17 +75,8 @@ public class ListFragment extends Fragment {
         binding = DataBindingUtil.setContentView(getActivity(), R.layout.fragment_list);
     }
 
-    private void onGoDetails() {
-        NavDirections action = ListFragmentDirections.actionDetail();
-        NavHostFragment.findNavController(this).navigate(action);
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding = DataBindingUtil.setContentView(getActivity(), R.layout.fragment_list);
-        binding.fabList.setOnClickListener(v -> {
-            onGoDetails();
-        });
     }
 }
