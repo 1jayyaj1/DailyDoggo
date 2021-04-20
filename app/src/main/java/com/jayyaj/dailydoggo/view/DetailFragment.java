@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -18,6 +20,8 @@ import android.widget.TextView;
 import com.jayyaj.dailydoggo.R;
 import com.jayyaj.dailydoggo.databinding.FragmentDetailBinding;
 import com.jayyaj.dailydoggo.databinding.FragmentListBinding;
+import com.jayyaj.dailydoggo.model.DogBreed;
+import com.jayyaj.dailydoggo.viewmodel.DogsDetailViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +31,7 @@ import com.jayyaj.dailydoggo.databinding.FragmentListBinding;
 public class DetailFragment extends Fragment {
     private FragmentDetailBinding binding;
     private int dogUuid;
+    private DogsDetailViewModel dogsDetailViewModel;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -79,8 +84,21 @@ public class DetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (getArguments() != null) {
-            dogUuid = DetailFragmentArgs.fromBundle(getArguments()).getDogUuid();
-        }
+        dogsDetailViewModel = ViewModelProviders.of(getActivity()).get(DogsDetailViewModel.class);
+
+        dogsDetailViewModel.getSelectedDog().observe(getActivity(), dog -> {
+            if (dog.getDogBreed() != null) {
+                binding.dogName.setText(dog.getDogBreed());
+            }
+            if (dog.getBredFor() != null) {
+                binding.dogPurpose.setText(dog.getBredFor());
+            }
+            if (dog.getTemperament() != null) {
+                binding.dogTemperament.setText(dog.getTemperament());
+            }
+            if (dog.getLifeSpan() != null) {
+                binding.dogLifespan.setText(dog.getLifeSpan());
+            }
+        });
     }
 }

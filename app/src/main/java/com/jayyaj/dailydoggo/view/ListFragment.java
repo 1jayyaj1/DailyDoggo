@@ -21,8 +21,10 @@ import android.view.ViewGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.jayyaj.dailydoggo.R;
 import com.jayyaj.dailydoggo.adapter.DogsListAdapter;
+import com.jayyaj.dailydoggo.adapter.OnDogClickListener;
 import com.jayyaj.dailydoggo.databinding.FragmentListBinding;
 import com.jayyaj.dailydoggo.model.DogBreed;
+import com.jayyaj.dailydoggo.viewmodel.DogsDetailViewModel;
 import com.jayyaj.dailydoggo.viewmodel.DogsListViewModel;
 
 import java.util.ArrayList;
@@ -33,10 +35,11 @@ import java.util.List;
  * Use the {@link ListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ListFragment extends Fragment {
+public class ListFragment extends Fragment implements OnDogClickListener {
     private FragmentListBinding binding;
     private DogsListViewModel dogsListViewModel;
     private DogsListAdapter dogsListAdapter;
+    private DogsDetailViewModel dogsDetailViewModel;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -84,7 +87,7 @@ public class ListFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         binding = DataBindingUtil.setContentView(getActivity(), R.layout.fragment_list);
-        dogsListAdapter = new DogsListAdapter(new ArrayList<>());
+        dogsListAdapter = new DogsListAdapter(new ArrayList<>(), this);
     }
 
     @Override
@@ -96,24 +99,26 @@ public class ListFragment extends Fragment {
         binding.dogsRecyclerView.setLayoutManager(new LinearLayoutManager((getContext())));
         binding.dogsRecyclerView.setAdapter(dogsListAdapter);
 
+        dogsDetailViewModel = ViewModelProviders.of(getActivity()).get(DogsDetailViewModel.class);
+
         obeserveViewModel();
     }
 
     private void obeserveViewModel() {
-        dogsListViewModel.getDogBreedList().observe(this, dogs -> {
+        dogsListViewModel.getDogBreedList().observe(getActivity(), dogs -> {
             if (dogs != null) {
                 binding.dogsRecyclerView.setVisibility(View.VISIBLE);
                 dogsListAdapter.updateDogsList(dogs);
             }
         });
 
-        dogsListViewModel.getDogLoadError().observe(this, loadError -> {
+        dogsListViewModel.getDogLoadError().observe(getActivity(), loadError -> {
             if (loadError != null) {
                 binding.recyclerErrorText.setVisibility(loadError ? View.VISIBLE : View.INVISIBLE);
             }
         });
 
-        dogsListViewModel.getDogLoadError().observe(this, isLoading -> {
+        dogsListViewModel.getDogLoadError().observe(getActivity(), isLoading -> {
             if (isLoading != null) {
                 binding.recyclerProgressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE);
                 if (isLoading) {
@@ -122,5 +127,17 @@ public class ListFragment extends Fragment {
                 }
             }
         });
+    }
+
+    public void onToDetails() {
+        NavDirections action = ListFragmentDirections.actionDetail(0);
+        NavHostFragment.findNavController(this).navigate(action);
+    }
+
+    @Override
+    public void onDogClicked(DogBreed dogBreed) {
+        Log.d("dog", dogBreed.getDogBreed());
+        dogsDetailViewModel.setSelectedDog(dogBreed);
+        onToDetails();
     }
 }

@@ -16,9 +16,11 @@ import java.util.List;
 
 public class DogsListAdapter extends RecyclerView.Adapter<DogsListAdapter.ViewHolder> {
     private List<DogBreed> dogsList;
+    private OnDogClickListener onDogClickListener;
 
-    public DogsListAdapter(List<DogBreed> dogsList) {
+    public DogsListAdapter(List<DogBreed> dogsList, OnDogClickListener onDogClickListener) {
         this.dogsList = dogsList;
+        this.onDogClickListener = onDogClickListener;
     }
 
     public void updateDogsList(List<DogBreed> updatedDogsList) {
@@ -46,16 +48,25 @@ public class DogsListAdapter extends RecyclerView.Adapter<DogsListAdapter.ViewHo
         return dogsList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView dogRowName;
         public TextView dogRowLifespan;
         public ImageView dogRowImage;
+        public OnDogClickListener dogClickListener;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             dogRowName = itemView.findViewById(R.id.dogRowName);
             dogRowLifespan = itemView.findViewById(R.id.dogRowLifespan);
             dogRowImage = itemView.findViewById(R.id.dogRowImage);
+            this.dogClickListener = onDogClickListener;
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            DogBreed dogBreed = dogsList.get(getAdapterPosition());
+            onDogClickListener.onDogClicked(dogBreed);
         }
     }
 }
